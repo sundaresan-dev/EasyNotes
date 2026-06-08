@@ -13,13 +13,19 @@ if [ -z "$GITHUB_TOKEN" ]; then
   exit 1
 fi
 
+# Ask user which branch to push
+CURRENT_BRANCH=$(git branch --show-current)
+read -p "Branch to push (default: $CURRENT_BRANCH): " BRANCH
+BRANCH=${BRANCH:-$CURRENT_BRANCH}
+
 git remote set-url origin "https://${GITHUB_TOKEN}@github.com/sundaresan-dev/EasyNotes.git" 2>/dev/null \
   || git remote add origin "https://${GITHUB_TOKEN}@github.com/sundaresan-dev/EasyNotes.git"
-
-git branch -M main
-git push -u origin main
+git add .
+git commit -m "$BRANCH"
+git branch -M "$BRANCH"
+git push -u origin "$BRANCH"
 
 # Remove token from remote URL after push
 git remote set-url origin "$REPO"
 
-echo "✅ Pushed to $REPO"
+echo "✅ Pushed branch '$BRANCH' to $REPO"
