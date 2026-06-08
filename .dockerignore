@@ -9,9 +9,6 @@ npm-debug.log*
 *~
 .DS_Store
 Thumbs.db
-Dockerfile
-Dockerfile.compose
-docker-compose*.yml
 .dockerignore
 README.md
 LICENSE
