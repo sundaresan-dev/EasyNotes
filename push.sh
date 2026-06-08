@@ -18,14 +18,31 @@ CURRENT_BRANCH=$(git branch --show-current)
 read -p "Branch to push (default: $CURRENT_BRANCH): " BRANCH
 BRANCH=${BRANCH:-$CURRENT_BRANCH}
 
+# Set remote with token
 git remote set-url origin "https://${GITHUB_TOKEN}@github.com/sundaresan-dev/EasyNotes.git" 2>/dev/null \
   || git remote add origin "https://${GITHUB_TOKEN}@github.com/sundaresan-dev/EasyNotes.git"
-git add .
-git commit -m "$BRANCH"
-git branch -M "$BRANCH"
-git push -u origin "$BRANCH"
 
-# Remove token from remote URL after push
+# Stage and commit
+git add .
+git commit -m "$BRANCH" 2>/dev/null
+
+# Switch/create branch
+git branch -M "$BRANCH"
+
+# Try normal push first
+if ! git push -u origin "$BRANCH" 2>&1; then
+  echo ""
+  read -p "⚠️  Push rejected. Force push? (y/n): " FORCE
+  if [ "$FORCE" = "y" ] || [ "$FORCE" = "Y" ]; then
+    git push -u origin "$BRANCH" --force
+  else
+    echo "Pulling with rebase..."
+    git pull --rebase origin "$BRANCH"
+    git push -u origin "$BRANCH"
+  fi
+fi
+
+# Remove token from remote URL
 git remote set-url origin "$REPO"
 
 echo "✅ Pushed branch '$BRANCH' to $REPO"
