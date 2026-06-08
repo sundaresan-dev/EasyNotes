@@ -50,10 +50,10 @@ Single container with local SQLite storage. Notes persist via mounted volume.
 docker build -t notes-app .
 
 # Run
-docker run -d -p 8080:8080 -v notes_data:/app/data --name notes-app notes-app
+docker run -d -p 4567:4567 -v notes_data:/app/data --name notes-app notes-app
 ```
 
-Open: **http://localhost:8080**
+Open: **http://localhost:4567**
 
 ### Mode 2: Docker Compose (MySQL)
 
@@ -70,7 +70,7 @@ docker compose logs -f
 docker compose down
 ```
 
-Open: **http://localhost:8080**
+Open: **http://localhost:4567**
 
 ## API Endpoints
 
@@ -88,7 +88,7 @@ Open: **http://localhost:8080**
 
 | Variable         | Default         | Description              |
 |------------------|-----------------|--------------------------|
-| `PORT`           | `8080`          | Server port              |
+| `PORT`           | `4567`          | Server port              |
 | `DB_TYPE`        | `sqlite`        | Storage: `sqlite`/`mysql`|
 | `DB_DIR`         | `./data`        | SQLite database directory|
 | `MYSQL_HOST`     | `mysql`         | MySQL hostname           |

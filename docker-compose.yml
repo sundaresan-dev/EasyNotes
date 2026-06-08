@@ -8,10 +8,10 @@ services:
       dockerfile: Dockerfile.compose
     container_name: easynotes-backend
     ports:
-      - "8080:8080"
+      - "4567:4567"
     environment:
       - NODE_ENV=production
-      - PORT=8080
+      - PORT=4567
       - DB_TYPE=mysql
       - MYSQL_HOST=mysql
       - MYSQL_PORT=3306
