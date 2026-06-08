@@ -1,0 +1,16 @@
+{
+  "name": "notes-app-backend",
+  "version": "1.0.0",
+  "description": "Notes Application Backend — Dual storage (SQLite / MySQL)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "better-sqlite3": "^11.7.0",
+    "mysql2": "^3.11.0",
+    "uuid": "^9.0.0"
+  }
+}

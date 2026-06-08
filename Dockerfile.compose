@@ -1,0 +1,36 @@
+# ============================================
+# Dockerfile for Docker Compose mode (MySQL)
+# ============================================
+FROM node:20-alpine AS production
+
+LABEL maintainer="ulu"
+LABEL description="EasyNotes Backend (MySQL mode)"
+LABEL version="1.0.0"
+
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -S appuser -u 1001 -G appgroup
+
+WORKDIR /app
+
+# Copy and install dependencies
+COPY backend/package*.json ./backend/
+RUN cd backend && npm ci --only=production && npm cache clean --force
+
+# Copy source
+COPY backend/ ./backend/
+COPY frontend/ ./frontend/
+
+RUN chown -R appuser:appgroup /app
+
+USER appuser
+
+ENV NODE_ENV=production
+ENV PORT=8080
+ENV DB_TYPE=mysql
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/api/health || exit 1
+
+CMD ["node", "backend/server.js"]

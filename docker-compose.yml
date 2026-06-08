@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  # ─── Backend ───────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.compose
+    container_name: easynotes-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - DB_TYPE=mysql
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=easynotes
+      - MYSQL_PASSWORD=easynotes_secret
+      - MYSQL_DATABASE=easynotes_db
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - easynotes-net
+
+  # ─── MySQL ─────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: easynotes-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_secret
+      - MYSQL_DATABASE=easynotes_db
+      - MYSQL_USER=easynotes
+      - MYSQL_PASSWORD=easynotes_secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secret"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - easynotes-net
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  easynotes-net:
+    driver: bridge
