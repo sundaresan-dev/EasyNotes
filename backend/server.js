@@ -114,7 +114,7 @@ app.get('*', (req, res) => {
 initStorage()
   .then(() => {
     app.listen(PORT, '0.0.0.0', () => {
-      console.log(`✨ Notes App running on http://localhost:${PORT}`);
+      console.log(`✨ EasyNotes running on http://localhost:${PORT}`);
     });
   })
   .catch((err) => {

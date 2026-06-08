@@ -47,10 +47,10 @@ Single container with local SQLite storage. Notes persist via mounted volume.
 
 ```bash
 # Build
-docker build -t notes-app .
+docker build -t easynotes .
 
 # Run
-docker run -d -p 4567:4567 -v notes_data:/app/data --name notes-app notes-app
+docker run -d -p 4567:4567 -v notes_data:/app/data --name easynotes easynotes
 ```
 
 Open: **http://localhost:4567**

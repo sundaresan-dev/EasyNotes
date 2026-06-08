@@ -1,7 +1,7 @@
 {
-  "name": "notes-app-backend",
+  "name": "easynotes-backend",
   "version": "1.0.0",
-  "description": "Notes Application Backend — Dual storage (SQLite / MySQL)",
+  "description": "EasyNotes Backend — Dual storage (SQLite / MySQL)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
